@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "JetpackCompose"
 include ':ComposeDemo'
 include ':stateexample'
+include ':CompLocalDemo'
