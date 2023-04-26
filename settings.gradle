@@ -14,5 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "JetpackCompose"
 include ':ComposeDemo'
-include ':stateexample'
+include ':StateExample'
 include ':CompLocalDemo'
+include ':SlotApiDemo'
