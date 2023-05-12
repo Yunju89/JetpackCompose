@@ -12,8 +12,9 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.example.customlayout.ui.theme.JetpackComposeTheme
 
@@ -53,7 +54,6 @@ fun CascadeLayout(
             val placeables = measurable.map { measurable ->     // 자식들 측정 List
                 measurable.measure(constraints)
             }
-
             placeables.forEach { placeable ->
                 placeable.placeRelative(x = xCoord, y = yCoord)     // 배치할 위치 지정 (x좌표, y좌표)
                 xCoord += placeable.width + spacing                 // 좌표에 간격 추가
@@ -61,6 +61,35 @@ fun CascadeLayout(
             }
         }
     }
+}
+
+@Composable
+fun CustomLayout(
+    content : @Composable () -> Unit,
+    modifier: Modifier = Modifier
+){
+    Layout(
+        modifier = modifier,
+        content = content,
+        measurePolicy = object : MeasurePolicy {    // MeasurePolicy : Layout 측정 및 동작 정의
+            override fun MeasureScope.measure(
+                measurables: List<Measurable>,      // 자식을 측정
+                constraints: Constraints            // 제약 조건 측정
+            ): MeasureResult {
+
+                val placeable = measurables.map { measurable ->
+                    // 측정, 레이아웃 정의, 반환된 placeable 들은 측정 된 width, height 값을 가진다.
+                    measurable.measure(constraints)
+                }
+
+                return layout(constraints.maxWidth, constraints.maxHeight) {
+                    placeable.forEach {
+                        it.placeRelative(x = 0, y = 0)
+                    }
+                }
+            }
+        }
+    )
 }
 
 @Composable
